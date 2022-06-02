@@ -8,6 +8,6 @@
 </head>
 <body>
 	<jsp:include page="/temp.jsp"></jsp:include>
-	리스트입니다.
+	Main화면 입니다.
 </body>
 </html>

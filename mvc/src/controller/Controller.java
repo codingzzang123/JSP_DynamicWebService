@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import jsp.board.action.BoardService;
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -71,7 +70,7 @@ public class Controller extends HttpServlet {
 
 	public void process(HttpServletRequest request,HttpServletResponse response)throws ServletException, IOException{
         String view = null;
-        BoardService board = null;	
+        Service service = null;	
         
         try {
         	String command = request.getRequestURI();
@@ -79,8 +78,9 @@ public class Controller extends HttpServlet {
         		command = command.substring(request.getContextPath().length());
         	}
         	System.out.println("command = "+command);
-        	board = (BoardService)map.get(command);
-        	view = board.excute(request, response);
+
+        	service = (Service)map.get(command);
+        	view = service.excute(request, response);
         }catch(Throwable e ) {
         	e.printStackTrace();
         }

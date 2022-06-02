@@ -23,26 +23,37 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath }/Main.do">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Vote</a>
               </li>
                <li class="nav-item">
-                <a class="nav-link" href="#">Board</a>
+                <a class="nav-link" href="${pageContext.request.contextPath }/board/list.do">Board</a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Menu
-                </a>
+              	<c:choose>
+              		<c:when test="${loginID eq null }">
+              			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+		                  Menu
+		                </a>
+		                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+		    				<li><a class="dropdown-item" href="${pageContext.request.contextPath }/user/Login.do">Login</a></li>
+		                    <li><a class="dropdown-item" href="${pageContext.request.contextPath }/user/Join.do">Sign Up</a></li>
+		                </ul>
+              		</c:when>
+              		<c:when test="${loginID ne null }">
+              			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+		                  ${loginID }
+		                </a>
+		                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+		    				<li><a class="dropdown-item" href="#">Profile</a></li>
+		                    <li><a class="dropdown-item" href="${pageContext.request.contextPath }/user/LogoutAction.do">Logout</a></li>
+		                </ul>
+              		</c:when>
+              	</c:choose>
                 
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-    				<li><a class="dropdown-item" href="#">Login</a></li>
-                    <li><a class="dropdown-item" href="#">Sign Up</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <%-- <li><a class="dropdown-item" href="#">Something else here</a></li>--%>
-                </ul>
-              </li>
+              </li>	
              
             </ul>
             <form class="d-flex">

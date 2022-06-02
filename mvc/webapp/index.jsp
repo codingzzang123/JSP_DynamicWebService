@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-this is index
+	<jsp:include page="/temp.jsp"></jsp:include>
 <br>
 <a href="${pageContext.request.contextPath }/board/list.do">게시판 리스트 보러 가기</a><br>
 <a href="${pageContext.request.contextPath }/Main.do">메인 화면 가기</a>

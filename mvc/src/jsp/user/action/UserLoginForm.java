@@ -1,11 +1,14 @@
-package jsp.board.action;
+package jsp.user.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class Main implements BoardService{
+import controller.Service;
+
+public class UserLoginForm implements Service {
 	@Override
 	public String excute(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-		return "/WEB-INF/Main.jsp";
+	
+		return "/WEB-INF/user/Login.jsp";
 	}
 }
