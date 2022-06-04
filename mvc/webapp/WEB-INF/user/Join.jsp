@@ -12,7 +12,7 @@
         <div class="container-fluid py-5">
             <form action="${pageContext.request.contextPath }/user/JoinAction.do" method="post" name="regForm" enctype="multipart/form-data">
                 <div class="container mt-5 mb-5" style="width: 60%; font-weight: bold; font-size: 20px;">
-                    <img class="mb-4" src="/mvc/img/user/Join.png" alt="logo" width="100" height="100">
+                    <img class="mb-4" src="/mvc/img/user/Login.png" alt="logo" width="100" height="100">
                     <h1><b>회원가입</b></h1>
                     <div class="mb-3 mt-5">
                         <label for="exampleInputEmail1" class="form-label">ID</label>

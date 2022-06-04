@@ -99,4 +99,104 @@ public class UserDAO {
 		}
 		return true;
 	}
+	public String getPicCode(String id) {
+		String sql = "select \"code\" from \"user\" where \"id\" = ?";
+		ResultSet rs = null;
+		String get = "";
+		try {
+			conn = pool.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,id);
+			rs = pstmt.executeQuery(); //쿼리 전송!
+			while(rs.next()) {
+				get = rs.getString(1);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {		
+			try {
+				if(pstmt != null)pstmt.close();
+				if(rs != null)rs.close();
+				if(conn != null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return get;
+	}
+	public UserVO select(String id) {
+		String sql = "select * from \"user\" where \"id\"=?";
+		ResultSet rs = null;
+		UserVO ls = new UserVO();
+		try {
+			conn = pool.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,id);
+			rs= pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ls.setId(rs.getString(1));
+				ls.setName(rs.getString(2));
+				ls.setPw(rs.getString(3));
+				ls.setAge(rs.getString(4));
+				ls.setComment(rs.getString(5));
+				ls.setImg(rs.getString(6));
+				ls.setCode(rs.getString(7));
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {		
+			try {
+				if(pstmt != null)pstmt.close();
+				if(conn != null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return ls == null?  null : ls;
+	}
+	public void updateUser(String id, String name, String age, String comment) {
+		String sql = "update \"user\" set \"name\"=?, \"age\"=?, \"comment\"=? where \"id\"=?"; 
+		try {
+			conn = pool.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,name);
+			pstmt.setString(2,age);
+			pstmt.setString(3,comment);
+			pstmt.setString(4,id);
+			pstmt.executeQuery(); 
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {		
+			try {
+				if(pstmt != null)pstmt.close();
+				if(conn != null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	public void updateUserPic(String id, String name, String age, String comment,String img, String code) {
+		String sql = "update \"user\" SET \"name\"=?, \"age\"=?,\"comment\"=?, \"img\"=?, \"code\"=? WHERE \"id\" = ?"; 
+		try {
+			conn = pool.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,name);
+			pstmt.setString(2,age);
+			pstmt.setString(3,comment);
+			pstmt.setString(4,img);
+			pstmt.setString(5,code);
+			pstmt.setString(6,id);
+			pstmt.executeQuery(); 
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {		
+			try {
+				if(pstmt != null)pstmt.close();
+				if(conn != null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

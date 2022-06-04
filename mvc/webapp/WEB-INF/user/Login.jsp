@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <% request.setCharacterEncoding("UTF-8");%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -64,17 +65,22 @@
 
     <title>Please Login</title>
 	</head>
-	  
-  
+
 <body class="text-center">
 <main class="form-signin">
-		
 	  <form action="${pageContext.request.contextPath }/user/LoginAction.do" method="post" name="loginForm">
 	    <img class="mb-4" src="/mvc/img/user/Login.png" width="200" height="200" alt="">
 	    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 	
 	    <div class="form-floating">
-	      <input type="text" name="id" class="form-control" id="floatingInput" placeholder="Id">
+	      <c:choose>
+	      		<c:when test="${cookie.remember.name eq null }">
+	      			<input type="text" name="id" class="form-control" id="floatingInput" placeholder="Id">
+	      		</c:when>
+	      		<c:when test="${cookie.remember.name ne null }">
+	      			<input type="text" name="id" class="form-control" value="${cookie.remember.value }" id="floatingInput" placeholder="Id">
+	      		</c:when>
+	      </c:choose>
 	      <label for="floatingInput">ID</label>
 	    </div>
 	    <div class="form-floating">
@@ -84,14 +90,21 @@
 		
 	    <div class="checkbox mb-3">
 	      <label>
-	        <input type="checkbox" name="remember" value="remember"> Remember me
+	      	<c:choose>
+	      		<c:when test="${cookie.remember.name eq null }">
+	      			<input type="checkbox" name="remember" value="remember"> Remember me
+	      		</c:when>
+	      		<c:when test="${cookie.remember.name ne null }">
+	      			<input type="checkbox" name="remember" value="remember" checked> Remember me
+	      		</c:when>
+	      	</c:choose>
 	      </label>
 	    </div>
 	    <input type="submit" value="Login" onclick="#" class="w-100 btn btn-lg btn-primary">
 	    <a href="${pageContext.request.contextPath }/user/Join.do">
 	    	<button class="w-100 btn btn-lg btn-primary" type="button" style="margin-top:10px;">Sign up</button>
 	    </a>
-	    <p class="mt-5 mb-3 text-muted">&copy; made by hosun</p>
+	    <p class="mt-5 mb-3 text-muted">&copy; made by hosun ${flag } ${reID }</p>
 	  </form>
 	</main>
 

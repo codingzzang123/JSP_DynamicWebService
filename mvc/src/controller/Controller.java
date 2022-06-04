@@ -69,9 +69,9 @@ public class Controller extends HttpServlet {
 	}
 
 	public void process(HttpServletRequest request,HttpServletResponse response)throws ServletException, IOException{
-        String view = null;
+        //String view = null;
         Service service = null;	
-        
+        ActionForward forward = null;
         try {
         	String command = request.getRequestURI();
         	if(command.indexOf(request.getContextPath())==0) {
@@ -80,15 +80,18 @@ public class Controller extends HttpServlet {
         	System.out.println("command = "+command);
 
         	service = (Service)map.get(command);
-        	view = service.excute(request, response);
+        	forward = service.excute(request, response);
         }catch(Throwable e ) {
         	e.printStackTrace();
         }
-        RequestDispatcher dispatcher = request.getRequestDispatcher(view);
-        dispatcher.forward(request, response);
+        if(forward.isRedirect()) {
+        	String pix = request.getContextPath();
+        	response.sendRedirect(pix+forward.getNextPath());
+        }else {
+        	RequestDispatcher dispatcher = request.getRequestDispatcher(forward.getNextPath());
+            dispatcher.forward(request, response);
+        }
+//        RequestDispatcher dispatcher = request.getRequestDispatcher(view);
+//        dispatcher.forward(request, response);
     }
-            
-
-
-
 }

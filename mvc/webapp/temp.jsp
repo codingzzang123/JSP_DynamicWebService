@@ -47,7 +47,7 @@
 		                  ${loginID }
 		                </a>
 		                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-		    				<li><a class="dropdown-item" href="#">Profile</a></li>
+		    				<li><a class="dropdown-item" href="${pageContext.request.contextPath }/user/Profile.do?userName=${loginID}">Profile</a></li>
 		                    <li><a class="dropdown-item" href="${pageContext.request.contextPath }/user/LogoutAction.do">Logout</a></li>
 		                </ul>
               		</c:when>

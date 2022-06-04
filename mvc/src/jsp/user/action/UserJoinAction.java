@@ -1,23 +1,20 @@
 package jsp.user.action;
 
 import java.io.File;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
-import controller.Service;
+import controller.*;
 import jsp.user.model.UserDAO;
 
 public class UserJoinAction implements Service {
 	@Override
-	public String excute(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+	public ActionForward excute(HttpServletRequest request, HttpServletResponse response) throws Throwable {
 		UserDAO dao = UserDAO.getInstance();
-		String result = ""; //리턴 해줄변수
+		String path = ""; //리턴 해줄변수
 		request.setCharacterEncoding("UTF-8");
 		String savaPath = "/fileUpload/user";
 		String prefix = "C:\\JavaS\\jspwork\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\mvc";
@@ -47,7 +44,7 @@ public class UserJoinAction implements Service {
 			
 			if(filename == null) {
 				dao.insert(id, name, pw, age, comment);
-				result =  "/WEB-INF/user/Login.jsp";
+				path ="/user/Login.do";
 			}
 			else {
 				String fe = "";
@@ -62,12 +59,14 @@ public class UserJoinAction implements Service {
 				file.renameTo(newFile); //이름 바꿔줌
 				
 				dao.insert(id, name, pw, age, comment, filename, code);
-				result =  "/WEB-INF/user/Login.jsp";
+				path ="/user/Login.do";
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return result; 
+		ActionForward forward = new ActionForward();
+		forward.setNextPath(path);
+		forward.setRedirect(true);
+		return forward;
 	}
-	
 }
