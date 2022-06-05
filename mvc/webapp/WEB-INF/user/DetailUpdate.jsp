@@ -10,6 +10,9 @@
 </head>
 <body>
 	<jsp:include page="/temp.jsp"></jsp:include>
+	<c:if test="${loginID eq null }"><c:redirect url="/Error.do" context="${pageContext.request.contextPath }"/></c:if>
+	<c:if test="${loginID ne ${u.id }"><c:redirect url="/Error.do" context="${pageContext.request.contextPath }"/></c:if>
+	
 	<form method="post" enctype="multipart/form-data" name="updateForm" action="${pageContext.request.contextPath }/user/ProfileAlter.do?userName=${u.id }">
 	    <div class="container mt-5 mb-5"  style="font-size: 20px; font-weight: bold; width: 60%;">
 	        <h1><b>정보수정</b></h1>

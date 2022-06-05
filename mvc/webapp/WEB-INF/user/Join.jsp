@@ -10,7 +10,7 @@
 <jsp:include page="/temp.jsp"></jsp:include>
 <div class="p-5 mb-4 bg-light rounded-3">
         <div class="container-fluid py-5">
-            <form action="${pageContext.request.contextPath }/user/JoinAction.do" method="post" name="regForm" enctype="multipart/form-data">
+            <form action="${pageContext.request.contextPath }/user/JoinAction.do" method="post" name="JoinForm" enctype="multipart/form-data">
                 <div class="container mt-5 mb-5" style="width: 60%; font-weight: bold; font-size: 20px;">
                     <img class="mb-4" src="/mvc/img/user/Login.png" alt="logo" width="100" height="100">
                     <h1><b>회원가입</b></h1>
@@ -46,11 +46,41 @@
                         <input type="file" class="form-control" name="upic" id="exampleInputPassword1">
                     </div>
                     <div class="mt-4 text-end">
-                    	<input type="submit" value="회원가입" class="btn btn-dark" style="font-weight: bold;"/>                    
+                    	<input type="button" value="회원가입" onclick="inputCheck()" class="btn btn-dark" style="font-weight: bold;"/>                    
                     </div>
                 </div>
             </form>
         </div>
     </div>
+	<script>
+	    function inputCheck(){
+	    if(document.JoinForm.id.value==""){
+	        alert("아이디를 입력해 주세요.");
+	        document.regForm.id.focus();
+	        return;
+	    }
+	    if(document.JoinForm.pw.value==""){
+	        alert("비밀번호를 입력해 주세요.");
+	        document.regForm.pw.focus();
+	        return;
+	    }
+	    if(document.JoinForm.age.value==""){
+	        alert("나이를 입력해 주세요.");
+	        document.regForm.age.focus();
+	        return;
+	    }
+	    if(document.JoinForm.name.value==""){
+	        alert("이름를 입력해 주세요.");
+	        document.regForm.name.focus();
+	        return;
+	    }
+	    if(document.JoinForm.comment.value==""){
+	        alert("소개를 입력해 주세요.");
+	        document.regForm.comment.focus();
+	        return;
+	    }
+	    document.JoinForm.submit();
+	}
+    </script>
 </body>
 </html>

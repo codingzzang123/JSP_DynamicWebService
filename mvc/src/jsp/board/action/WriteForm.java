@@ -10,7 +10,7 @@ public class WriteForm implements Service{
 	public ActionForward excute(HttpServletRequest request, HttpServletResponse response) throws Throwable {
 		ActionForward forward = new ActionForward();
 		forward.setRedirect(false);
-		forward.setNextPath("");
+		forward.setNextPath("/WEB-INF/board/create.jsp");
 		return forward;
 	}
 }

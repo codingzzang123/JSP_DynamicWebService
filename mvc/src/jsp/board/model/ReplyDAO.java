@@ -103,6 +103,31 @@ public class ReplyDAO {
 			}
 		}
 	}
+	public int selectDeleteOrder(int order) { //부모댓글 삭제하면 자식댓글도 삭제되니 같은order값이 몇개 있는지 찾아야함
+		String sql = "select count(*) from reply where \"order\"=?";
+		ResultSet rs = null;
+		int number=0;
+		try {
+			conn = pool.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1,order);
+			rs= pstmt.executeQuery();
+			
+			while(rs.next()) {
+				number = rs.getInt(1);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {		
+			try {
+				if(pstmt != null)pstmt.close();
+				if(conn != null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return number;
+	}
 	public void deleteRe(int step) {
 		String sql = "delete from reply where \"step\" = ?";
 		try {
@@ -155,7 +180,7 @@ public class ReplyDAO {
 		return (ls.size() == 0) ? null : ls;
 	}
 	public void insertReReply(int num, String maker, String content,int order,int ref) {
-		String sql = "insert into reply values(?,?,?,?, ?, ?, \"SEQ_STEP\".NEXTVAL)";
+		String sql = "insert into reply values(?,?,?,?, ?, ?, \"seq_reply\".NEXTVAL)";
 		try {
 			Date date = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");

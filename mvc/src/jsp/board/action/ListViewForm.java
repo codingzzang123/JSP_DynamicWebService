@@ -13,7 +13,7 @@ public class ListViewForm implements Service{
 	public ActionForward excute(HttpServletRequest request, HttpServletResponse response) throws Throwable {
 		
 		int num = Integer.parseInt(request.getParameter("num")); //글 번호(기본키)
-		
+		int pageNum = Integer.parseInt(request.getParameter("pageNum"));
 		BoardDAO bdao = BoardDAO.getInstance();
 		ReplyDAO rdao = ReplyDAO.getInstance();
 		UserDAO udao = UserDAO.getInstance();
@@ -26,6 +26,7 @@ public class ListViewForm implements Service{
 		List<ReplyVO> replys = rdao.getReplys(num); //글 번호에대한 댓글을 가져옴
 		List<ReplyVO> reReplys = rdao.reReplys(num); //댓글에대한 답글을 가져옴
 		
+		request.setAttribute("pageNum", pageNum);
 		request.setAttribute("detail", detail);
 		request.setAttribute("code", code);
 		request.setAttribute("replys", replys);

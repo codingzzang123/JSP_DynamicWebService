@@ -10,10 +10,13 @@
 </head>
 <body>
 	<jsp:include page="/temp.jsp"></jsp:include>
+	<c:if test="${loginID eq null }"><c:redirect url="/Error.do" context="${pageContext.request.contextPath }"/></c:if>
+	<c:if test="${loginID ne ${u.id }"><c:redirect url="/Error.do" context="${pageContext.request.contextPath }"/></c:if>
+	
 <div class="container mt-5 mb-5" style="font-size: 20px; font-weight: bold; width: 60%;">
         <h1><b>프로필</b></h1>
 		<div class="text-center mt-5">
-		            <img src="http://localhost:8080/mvc/fileUpload/user/${u.code }" class="rounded-circle" width="400px" height="300px">
+		            <img src="http://localhost:8080/mvc/fileUpload/user/${u.code }" class="rounded-circle" width="250px" height="250px">
         </div>
         
 

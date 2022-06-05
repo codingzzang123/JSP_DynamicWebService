@@ -9,7 +9,7 @@ public class BoardVO {
 	private int clicks;
 	private int replys;
     private String upload;
-    
+    private String pass;
     
 	public int getReplys() {
 		return replys;
@@ -21,7 +21,7 @@ public class BoardVO {
 
 	public BoardVO() {}
 	
-	public BoardVO(int num, String subject, String content, String pubdate, String maker, int clicks,int replys,String upload) {
+	public BoardVO(int num, String subject, String content, String pubdate, String maker, int clicks,int replys,String upload, String pass) {
 		super();
 		this.num = num;
 		this.subject = subject;
@@ -31,6 +31,7 @@ public class BoardVO {
 		this.clicks = clicks;
 		this.replys = replys;
 		this.upload = upload;
+		this.pass = pass;
 	}
 	
 	
@@ -77,6 +78,14 @@ public class BoardVO {
 
 	public void setUpload(String upload) {
 		this.upload = upload;
+	}
+
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
 	}
 	
 }

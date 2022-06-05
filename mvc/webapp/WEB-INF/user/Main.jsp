@@ -24,7 +24,7 @@
 		        <div class="container-fluid py-5">
 		            <h1 class="display-5 fw-bold"> 💬 Hosun Page </h1>
 		            <p class="fs-4"> ✋Welcome ${loginID } </p>
-		            <img src="http://localhost:8080/mvc/fileUpload/user/${imgcode }" width="400px" height="300px" class="rounded-circle">
+		            <img src="http://localhost:8080/mvc/fileUpload/user/${imgcode }" width="350px" height="350px" class="rounded-circle">
 		        </div>
 	    	</div>	
 		</c:when>

@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %> 
+<% request.setCharacterEncoding("UTF-8");%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Board List..</title>
 </head>
 <body>
 	<jsp:include page="/temp.jsp"></jsp:include>
@@ -70,7 +71,7 @@
             <div class="col-lg-2 text-end">
             	<c:choose>
             		<c:when test="${loginID ne null }">
-            			<a href="create.jsp"><button type="button" class="btn btn-success btn-lg">
+            			<a href="${pageContext.request.contextPath }/board/write.do"><button type="button" class="btn btn-success btn-lg">
                    		 글쓰기</button></a>
             		</c:when>
             		<c:when test="${loginID eq null }">

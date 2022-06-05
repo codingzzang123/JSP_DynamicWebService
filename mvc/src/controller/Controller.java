@@ -65,6 +65,7 @@ public class Controller extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
 		process(req,resp);
 	}
 

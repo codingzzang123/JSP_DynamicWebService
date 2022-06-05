@@ -45,7 +45,8 @@ public class BoardDAO {
 						rs.getString(5),
 						rs.getInt(6),
 						rs.getInt(7),
-						rs.getString(8));
+						rs.getString(8),
+						rs.getString(9));
 						
 				ls.add(tmp);
 			}
@@ -81,6 +82,7 @@ public class BoardDAO {
 				ls.setClicks(rs.getInt(6));
 				ls.setReplys(rs.getInt(7));
 				ls.setUpload(rs.getString(8));
+				ls.setPass(rs.getString(9));
 			}
 		} catch(SQLException e) {
 			e.printStackTrace();
@@ -126,7 +128,7 @@ public class BoardDAO {
             conn = pool.getConnection();
             /* 수정<2> */
             pstmt = conn.prepareStatement(
-            		"select \"num\", subject, content, pubdate, maker, clicks, replys ,upload from (select rownum rnum, \"num\", subject, content, pubdate, maker, clicks, replys ,upload FROM(select * from board order by \"num\" DESC)) where rnum>=? and rnum<=?"); //수정<3>
+            		"select \"num\", subject, content, pubdate, maker, clicks, replys ,upload, PASS from (select rownum rnum, \"num\", subject, content, pubdate, maker, clicks, replys ,upload, PASS FROM(select * from board order by \"num\" DESC)) where rnum>=? and rnum<=?"); //수정<3>
             pstmt.setInt(1, start);
             pstmt.setInt(2, end);
             rs = pstmt.executeQuery();
@@ -141,7 +143,8 @@ public class BoardDAO {
     						rs.getString(5),
     						rs.getInt(6),
     						rs.getInt(7),
-    						rs.getString(8));
+    						rs.getString(8),
+    						rs.getString(9));
     						
     				articleList.add(tmp);
                 } while(rs.next());
@@ -155,8 +158,8 @@ public class BoardDAO {
         }
         return articleList;
     }
-	public void createBoard(String subject, String content, String maker) {
-		String sql = "INSERT INTO BOARD (\"num\",subject,content,pubdate,maker) values (\"SEQ_BOARD\".NEXTVAL,?,?,?,?)";
+	public void createBoard(String subject, String content, String maker, String pass) {
+		String sql = "INSERT INTO BOARD (\"num\",subject,content,pubdate,maker,pass) values (\"SEQ_BOARD\".NEXTVAL,?,?,?,?,?)";
 		
 		try {
 			Date date = new Date();
@@ -168,6 +171,7 @@ public class BoardDAO {
 			pstmt.setString(2, content);
 			pstmt.setString(3, pubdate);
 			pstmt.setString(4, maker);
+			pstmt.setString(5, pass);
 			pstmt.executeQuery(); 
 			
 		} catch(SQLException e) {
@@ -181,8 +185,8 @@ public class BoardDAO {
 			}
 		}
 	}
-	public void createBoardPic(String subject, String content, String maker,String filename) {
-		String sql = "INSERT INTO BOARD (\"num\",subject,content,pubdate,maker,upload) values (\"SEQ_BOARD\".NEXTVAL,?,?,?,?,?)";
+	public void createBoardPic(String subject, String content, String maker,String filename, String pass) {
+		String sql = "INSERT INTO BOARD (\"num\",subject,content,pubdate,maker,upload,pass) values (\"SEQ_BOARD\".NEXTVAL,?,?,?,?,?,?)";
 		
 		try {
 			Date date = new Date();
@@ -195,6 +199,7 @@ public class BoardDAO {
 			pstmt.setString(3, pubdate);
 			pstmt.setString(4, maker);
 			pstmt.setString(5, filename);
+			pstmt.setString(6, pass);
 			pstmt.executeQuery(); 
 			
 		} catch(SQLException e) {
@@ -245,7 +250,7 @@ public class BoardDAO {
 		}
 	}
 	public void update(String subject, String content, int num) {
-		String sql = "update board set subject=? , content=? where \"num\" = ?";
+		String sql = "update board set subject=? ,content=? where \"num\" = ?";
 		try {
 			conn = pool.getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -264,7 +269,28 @@ public class BoardDAO {
 			}
 		}
 	}
-	public void replys(int num) {
+	public void updateFile(String subject, String content, String upload ,int num) {
+		String sql = "update board set subject=? ,content=? , upload=? where \"num\" = ?";
+		try {
+			conn = pool.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, subject);
+			pstmt.setString(2, content);
+			pstmt.setString(3, upload);
+			pstmt.setInt(4, num);
+			pstmt.executeQuery(); 
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {		
+			try {
+				if(pstmt != null)pstmt.close();
+				if(conn != null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	public void replysPlus(int num) {
 		String sql = "UPDATE board SET replys=replys+1 where \"num\"=?";
 		try {
 			conn = pool.getConnection();
@@ -299,5 +325,58 @@ public class BoardDAO {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public boolean getSubjectPass(int num,String pass) {
+		String sql = "select \"num\" from board where \"num\"=? and pass=?";
+		ResultSet rs = null;
+		int number=0;
+		try {
+			conn = pool.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1,num);
+			pstmt.setString(2,pass);
+			rs= pstmt.executeQuery();
+			
+			while(rs.next()) {
+				number = rs.getInt(1);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {		
+			try {
+				if(pstmt != null)pstmt.close();
+				if(conn != null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} //true이면 pass맞는거임 , false이면 틀린거
+		return number != 0 ? true:false; 
+	}
+	public boolean isDelete(String pass, int num) {
+		String sql = "select \"num\" from board where \"num\"=? and pass=?";
+		ResultSet rs = null;
+		int number=0;
+		try {
+			conn = pool.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1,num);
+			pstmt.setString(2,pass);
+			rs= pstmt.executeQuery();
+			
+			while(rs.next()) {
+				number = rs.getInt(1);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {		
+			try {
+				if(pstmt != null)pstmt.close();
+				if(conn != null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} //true이면 pass맞는거임 , false이면 틀린거
+		return number != 0 ? true:false; 
 	}
 }

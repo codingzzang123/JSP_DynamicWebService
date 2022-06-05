@@ -68,7 +68,7 @@
 
 <body class="text-center">
 <main class="form-signin">
-	  <form action="${pageContext.request.contextPath }/user/LoginAction.do" method="post" name="loginForm">
+	  <form action="${pageContext.request.contextPath }/user/LoginAction.do" method="post" name="LoginForm">
 	    <img class="mb-4" src="/mvc/img/user/Login.png" width="200" height="200" alt="">
 	    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 	
@@ -100,13 +100,28 @@
 	      	</c:choose>
 	      </label>
 	    </div>
-	    <input type="submit" value="Login" onclick="#" class="w-100 btn btn-lg btn-primary">
+	    <input type="button" value="Login" onclick="inputCheck()" class="w-100 btn btn-lg btn-primary">
 	    <a href="${pageContext.request.contextPath }/user/Join.do">
 	    	<button class="w-100 btn btn-lg btn-primary" type="button" style="margin-top:10px;">Sign up</button>
 	    </a>
-	    <p class="mt-5 mb-3 text-muted">&copy; made by hosun ${flag } ${reID }</p>
+	    <p class="mt-5 mb-3 text-muted">&copy; made by hosun</p>
 	  </form>
 	</main>
-
+	<script>
+	    function inputCheck(){
+	    if(document.LoginForm.id.value==""){
+	        alert("아이디를 입력해 주세요.");
+	        document.regForm.id.focus();
+	        return;
+	    }
+	    if(document.LoginForm.pw.value==""){
+	        alert("비밀번호를 입력해 주세요.");
+	        document.regForm.pw.focus();
+	        return;
+	    }
+	    
+	    document.LoginForm.submit();
+	}
+    </script>
 </body>
 </html>
