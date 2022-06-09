@@ -142,7 +142,7 @@
 					<c:choose>
 						<c:when test="${loginID eq null }"><div class="col-lg-1 text-end"><img src="http://localhost:8080/mvc/fileUpload/board/x.png" width="15" height="15" style="margin-bottom:5px;" /></div></c:when>
 						<c:when test="${re.maker ne loginID }"><div class="col-lg-1 text-end"><img src="http://localhost:8080/mvc/fileUpload/board/x.png" width="15" height="15" style="margin-bottom:5px;" /></div></c:when>
-						<c:when test="${re.maker eq loginID }"><div class="col-lg-1 text-end"><a href="${pageContext.request.contextPath }/board/deleteReplyAction.do?order=${re.order }&maker=${re.maker }&num=${detail.num }&pageNum=${pageNum }"><img src="http://localhost:8080/mvc/fileUpload/board/x.png" width="15" height="15" style="margin-bottom:5px;" /></a></div></c:when>
+						<c:when test="${re.maker eq loginID }"><div class="col-lg-1 text-end"><button type="button" style="border:none;" data-bs-toggle="modal" data-bs-target="#DelReply"><img src="http://localhost:8080/mvc/fileUpload/board/x.png" width="15" height="15" style="margin-bottom:5px;" /></button></div></c:when>
 					</c:choose>
 				</div>
 				<h3>
@@ -158,7 +158,7 @@
 									<c:choose>
 										<c:when test="${loginID eq null }"><div class="col-lg-1 text-end"><img src="http://localhost:8080/mvc/fileUpload/board/x.png" width="10" height="10" style="margin-bottom:5px;" /></div></c:when>
 										<c:when test="${r.maker ne loginID }"><div class="col-lg-1 text-end"><a href="${pageContext.request.contextPath }/Error.do"><img src="http://localhost:8080/mvc/fileUpload/board/x.png" width="10" height="10" style="margin-bottom:5px;" /></a></div></c:when>
-										<c:when test="${r.maker eq loginID }"><div class="col-lg-1 text-end"><a href="${pageContext.request.contextPath }/board/deleteReReplyAction.do?step=${r.step }&maker=${r.maker }&num=${detail.num }&pageNum=${pageNum }"><img src="http://localhost:8080/mvc/fileUpload/board/x.png" width="10" height="10" style="margin-bottom:5px;" /></a></div></c:when>
+										<c:when test="${r.maker eq loginID }"><div class="col-lg-1 text-end"><button type="button" style="border:none;" data-bs-toggle="modal" data-bs-target="#DelReReply"><img src="http://localhost:8080/mvc/fileUpload/board/x.png" width="10" height="10" style="margin-bottom:5px;" /></button></div></c:when>
 									</c:choose>
 								</div>
 							</c:if>
@@ -239,7 +239,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"><b>게시글 삭제 알림</b></h5>
+                    <h5 class="modal-title" id="exampleModalLabel"><b>게시물 삭제 알림</b></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="post" action="${pageContext.request.contextPath }/board/deleteSubjectAction.do">
@@ -249,6 +249,45 @@
                         <input type="password" name="ckpw" class="form-control mt-2">
                         <input type="hidden" name="num" value="${detail.num }">
                         <input type="hidden" name="maker" value="${detail.maker }">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-danger" style="font-weight: bold; font-family:monospace;">삭제</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    	</div>
+    <div class="modal fade" id="DelReply" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><b>댓글 삭제 알림</b></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="${pageContext.request.contextPath }/board/deleteReplyAction.do?order=${re.order }&maker=${re.maker }&num=${detail.num }&pageNum=${pageNum }">
+                    <div class="modal-body">
+                        <h5>정말로 삭제하시겠습니까?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-danger" style="font-weight: bold; font-family:monospace;">삭제</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="DelReReply" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><b>댓글 삭제 알림</b></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="${pageContext.request.contextPath }/board/deleteReReplyAction.do?step=${r.step }&maker=${r.maker }&num=${detail.num }&pageNum=${pageNum }">
+                    <div class="modal-body">
+                        <h5>정말로 삭제하시겠습니까?</h5>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

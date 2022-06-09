@@ -25,24 +25,23 @@
             
             
             <tbody>
-            	<c:set var="no" value="${number }"/>
+            	
                 <c:if test="${articleList ne null }">
-	            	<c:forEach var="article" items="${articleList }" varStatus="loop">
+	            	<c:forEach var="article" items="${articleList }">
 	            		<tr>
-	                        <th scope="row">${no }</th>
+	                        <th scope="row">${article.num }</th>
 	                        <c:choose>
 	                        	<c:when test="${article.replys gt 0 }">
-	                        		<td><a class="sub" href="${pageContext.request.contextPath }/board/list/view.do?num=${article.num }&pageNum=${currentPage }" >${article.subject } </a>[${article.replys }]</td>
+	                        		<td><a class="sub" href="${pageContext.request.contextPath }/board/list/view.do?num=${article.num }&pageNum=${curPageNum }" >${article.subject } </a>[${article.replys }]</td>
 	                        	</c:when>
 	                        	<c:when test="${article.replys eq 0 }">
-	                        		<td><a class="sub" href="${pageContext.request.contextPath }/board/list/view.do?num=${article.num }&pageNum=${currentPage }" >${article.subject } </a></td>
+	                        		<td><a class="sub" href="${pageContext.request.contextPath }/board/list/view.do?num=${article.num }&pageNum=${curPageNum }" >${article.subject } </a></td>
 	                        	</c:when>
 	                        </c:choose>
 	                        <td>${article.pubdate }</td>
 	                        <td>${article.maker }</td>
 	                        <td>${article.clicks }</td>
 	                    </tr>
-	                    <c:set var="no" value="${no-1 }"/>
 	            	</c:forEach>
             	</c:if>
             	<c:if test="${articleList eq null }">
@@ -57,19 +56,10 @@
             </tbody>
             
         </table>
-        <div class="row mt-5">
-            <div class="col-lg-10 text-center">
-                <form>
-                    <select name="cate">
-                        <option value="sub" selected>제목</option>
-                        <option value="wri" selected>글쓴이</option>
-                        <option value="con" selected>내용</option>
-                        <input name="kw" type="text" size="50" value=""><button>검색</button>
-                    </select> 
-                </form>
-            </div>
-            <div class="col-lg-2 text-end">
-            	<c:choose>
+        <div class="row mt-2">
+        	<div class="col-lg-10"></div>
+        	<div class="col-lg-2 text-end">
+        		<c:choose>
             		<c:when test="${loginID ne null }">
             			<a href="${pageContext.request.contextPath }/board/write.do"><button type="button" class="btn btn-success btn-lg">
                    		 글쓰기</button></a>
@@ -79,39 +69,56 @@
                     		글쓰기</button>
             		</c:when>
             	</c:choose>
-                
-            </div>    
-       </div>
-      </div> 
-        
-      <c:set var="i" value="0"/>  
-      <div class="row">
-        <div class="col-lg-11">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination nav justify-content-center">
-					<c:if test="${count gt 0 }">
-						<c:if test="${startPage gt pageBlock }">
-							<a href="${pageContext.request.contextPath }/board/list.do?pageNum=${startPage-pageBlock }">[이전]</a>
-						</c:if>
-						<c:forEach begin="${startPage }" end="${endPage }" var="i">
-							<li class="page-item active" style="margin-left:2px;"><a class="page-link" href="${pageContext.request.contextPath }/board/list.do?pageNum=${i }">${i }</a></li>
-						</c:forEach>
-						<c:if test="${pageCount gt endPage }">
-							<a href="${pageContext.request.contextPath }/board/list.do?pageNum=${startPage+pageBlock }">[다음]</a>
-						</c:if>					
-					</c:if>  
-                </ul>
-            </nav>
+        	</div>
         </div>
-        <div class="col-lg-1"></div>
-    </div>
         
+           
+	      <div class="row">
+	        <div class="#">
+	            <nav aria-label="Page navigation example">
+	                <ul class="pagination nav justify-content-center">
+	                	<c:choose>
+	                		<c:when test="${ curPageNum > pageBlock && !empty kwd }">
+	                			<li><a href="${pageContext.request.contextPath }/board/list.do?pageNum=${blockStartNum-pageBlock }&search=${cate }&keyword=${kwd }">◀</a></li>
+	                		</c:when>
+	                		<c:when test="${ curPageNum > pageBlock }">
+	                			 <li><a href="${pageContext.request.contextPath }/board/list.do?pageNum=${blockStartNum-pageBlock }">◀</a></li>
+	                		</c:when>
+	                	</c:choose>
+						<c:forEach begin="${blockStartNum }" end="${blockLastNum }" var="i">
+							<c:choose>
+								<c:when test="${!empty kwd }">
+									<li><a class="page-link" href="${pageContext.request.contextPath }/board/list.do?pageNum=${i }&search=${cate }&keyword=${kwd }">${i }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a class="page-link" href="${pageContext.request.contextPath }/board/list.do?pageNum=${i }&search=${cate }&keyword=${kwd }">${i }</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<c:choose>
+	                		<c:when test="${ lastPageNum > blockLastNum && !empty kwd }">
+	                			<li><a href="${pageContext.request.contextPath }/board/list.do?pageNum=${blockStartNum+pageBlock }&search=${cate }&keyword=${kwd }">▶</a></li>
+	                		</c:when>
+	                		<c:when test="${ lastPageNum > blockLastNum }">
+	                			<li><a href="${pageContext.request.contextPath }/board/list.do?pageNum=${blockStartNum+pageBlock }">▶</a></li>
+	                		</c:when>
+	                	</c:choose>
+	                </ul>
+	            </nav>
+	        </div>
+	    </div>
         
-        
-       
-       
-
-    
-    
+        <div class="row	mt-5 mb-5">
+            <div class="text-center">
+                <form action="${pageContext.request.contextPath }/board/list.do" method="post">
+                    <select name="search">
+                        <option value="sub" selected>제목</option>
+                        <option value="wri" selected>글쓴이</option>
+                        <option value="con" selected>내용</option>
+                        <input name="keyword" type="text" size="50" value=""><button>검색</button>
+                    </select> 
+                </form>
+            </div>
+       	</div>
 </body>
 </html>

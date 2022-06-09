@@ -26,6 +26,7 @@
 		            <p class="fs-4"> ✋Welcome ${loginID } </p>
 		            <img src="http://localhost:8080/mvc/fileUpload/user/${imgcode }" width="350px" height="350px" class="rounded-circle">
 		        </div>
+		        <a href="#"></a>
 	    	</div>	
 		</c:when>
 	</c:choose>

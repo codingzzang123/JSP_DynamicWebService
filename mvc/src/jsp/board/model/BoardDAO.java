@@ -118,6 +118,37 @@ public class BoardDAO {
 	    }
 	    return x;
 	}
+	public int getArticleCountSearch(String cate,String kwd){
+		String sql="";
+		String fix='%'+kwd+'%';
+		if(cate.equals("sub")) {
+			sql = "select count(*) from BOARD where subject like ?";
+		}else if(kwd.equals("wri")) {
+			sql = "select count(*) from BOARD where maker like ?";
+		}else if(kwd.equals("con")) {
+			sql = "select count(*) from BOARD where content like ?";
+		}
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    int x = 0;
+	    try{
+	        conn = pool.getConnection();
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, fix);
+	        rs = pstmt.executeQuery();
+	        if(rs.next()){
+	            x = rs.getInt(1);
+	        }
+	    } catch(Exception e){
+	        e.printStackTrace();
+	    } finally{
+	        if(rs != null) try { rs.close(); } catch (SQLException e){}
+	        if(pstmt != null) try { pstmt.close(); } catch (SQLException e){}
+	        if(conn != null) try { conn.close(); } catch (SQLException e){}
+	    }
+	    return x;
+	}
 	
 	public List<BoardVO> getArticles(int start, int end){
         Connection conn = null;
@@ -378,5 +409,125 @@ public class BoardDAO {
 			}
 		} //true이면 pass맞는거임 , false이면 틀린거
 		return number != 0 ? true:false; 
+	}
+	public List<BoardVO> searchSubject(String subject,int start, int end){
+		String sql = "select \"num\", subject, content, pubdate, maker, clicks, replys ,upload, PASS \r\n" + 
+				"    from (select rownum rnum, \"num\", subject, content, pubdate, maker, clicks, replys ,upload, PASS \r\n" + 
+				"        FROM(select * from board where subject like ? order by \"num\" DESC)) where rnum>=? and rnum<=?";
+		ResultSet rs = null;
+		List<BoardVO> ls = new ArrayList<>();
+		String subject2 = '%'+subject+'%';
+		try {
+			conn = pool.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, subject2);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			rs= pstmt.executeQuery(); 
+			while(rs.next()) {
+				BoardVO tmp = new BoardVO(
+						rs.getInt(1),
+						rs.getString(2),
+						rs.getString(3),
+						rs.getString(4),
+						rs.getString(5),
+						rs.getInt(6),
+						rs.getInt(7),
+						rs.getString(8),
+						rs.getString(9));
+						
+				ls.add(tmp);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {		
+			try {
+				if(pstmt != null)pstmt.close();
+				if(conn != null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return (ls.size() == 0) ? null : ls;
+	}
+	public List<BoardVO> searchMaker(String maker,int start, int end){
+		String sql="select \"num\", subject, content, pubdate, maker, clicks, replys ,upload, PASS \r\n" + 
+				"    from (select rownum rnum, \"num\", subject, content, pubdate, maker, clicks, replys ,upload, PASS \r\n" + 
+				"        FROM(select * from board where maker like ? order by \"num\" DESC)) where rnum>=? and rnum<=?";
+		ResultSet rs = null;
+		String maker2 = maker+'%';
+		List<BoardVO> ls = new ArrayList<>();
+		try {
+			conn = pool.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, maker2);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			rs= pstmt.executeQuery(); 
+			while(rs.next()) {
+				BoardVO tmp = new BoardVO(
+						rs.getInt(1),
+						rs.getString(2),
+						rs.getString(3),
+						rs.getString(4),
+						rs.getString(5),
+						rs.getInt(6),
+						rs.getInt(7),
+						rs.getString(8),
+						rs.getString(9));
+						
+				ls.add(tmp);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {		
+			try {
+				if(pstmt != null)pstmt.close();
+				if(conn != null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return (ls.size() == 0) ? null : ls;
+	}
+	public List<BoardVO> searchContent(String content,int start, int end){
+		String sql = "select \"num\", subject, content, pubdate, maker, clicks, replys ,upload, PASS \r\n" + 
+				"    from (select rownum rnum, \"num\", subject, content, pubdate, maker, clicks, replys ,upload, PASS \r\n" + 
+				"        FROM(select * from board where content like ? order by \"num\" DESC)) where rnum>=? and rnum<=?";
+		ResultSet rs = null;
+		List<BoardVO> ls = new ArrayList<>();
+		String content2 = '%'+content+'%';
+		try {
+			conn = pool.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, content2);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			rs= pstmt.executeQuery(); 
+			while(rs.next()) {
+				BoardVO tmp = new BoardVO(
+						rs.getInt(1),
+						rs.getString(2),
+						rs.getString(3),
+						rs.getString(4),
+						rs.getString(5),
+						rs.getInt(6),
+						rs.getInt(7),
+						rs.getString(8),
+						rs.getString(9));
+						
+				ls.add(tmp);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {		
+			try {
+				if(pstmt != null)pstmt.close();
+				if(conn != null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return (ls.size() == 0) ? null : ls;
 	}
 }
