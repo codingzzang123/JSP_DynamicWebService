@@ -74,33 +74,47 @@
         
            
 	      <div class="row">
-	        <div class="#">
+	        <div class="col-lg-11">
 	            <nav aria-label="Page navigation example">
 	                <ul class="pagination nav justify-content-center">
 	                	<c:choose>
-	                		<c:when test="${ curPageNum > pageBlock && !empty kwd }">
-	                			<li><a href="${pageContext.request.contextPath }/board/list.do?pageNum=${blockStartNum-pageBlock }&search=${cate }&keyword=${kwd }">◀</a></li>
+	                		<c:when test="${ (curPageNum > 1) && !empty kwd }">
+	                			<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath }/board/list.do?pageNum=${curPageNum-1 }&search=${cate }&keyword=${kwd }">◀</a></li>
 	                		</c:when>
-	                		<c:when test="${ curPageNum > pageBlock }">
-	                			 <li><a href="${pageContext.request.contextPath }/board/list.do?pageNum=${blockStartNum-pageBlock }">◀</a></li>
+	                		<c:when test="${ curPageNum > 1 }">
+	                			 <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath }/board/list.do?pageNum=${curPageNum-1 }">이전</a></li>
 	                		</c:when>
 	                	</c:choose>
 						<c:forEach begin="${blockStartNum }" end="${blockLastNum }" var="i">
 							<c:choose>
 								<c:when test="${!empty kwd }">
-									<li><a class="page-link" href="${pageContext.request.contextPath }/board/list.do?pageNum=${i }&search=${cate }&keyword=${kwd }">${i }</a></li>
+									<c:choose>
+										<c:when test="${i eq curPageNum }">
+											<li class="page-item active" aria-current="true"><a class="page-link" href="${pageContext.request.contextPath }/board/list.do?pageNum=${i }&search=${cate }&keyword=${kwd }">${i }</a></li>
+										</c:when>
+										<c:otherwise>
+											<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath }/board/list.do?pageNum=${i }&search=${cate }&keyword=${kwd }">${i }</a></li>
+										</c:otherwise>
+									</c:choose>
 								</c:when>
 								<c:otherwise>
-									<li><a class="page-link" href="${pageContext.request.contextPath }/board/list.do?pageNum=${i }&search=${cate }&keyword=${kwd }">${i }</a></li>
+									<c:choose>
+										<c:when test="${i eq curPageNum }">
+											<li class="page-item active" aria-current="true"><a class="page-link" href="${pageContext.request.contextPath }/board/list.do?pageNum=${i }&search=${cate }&keyword=${kwd }">${i }</a></li>
+										</c:when>
+										<c:otherwise>
+											<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath }/board/list.do?pageNum=${i }&search=${cate }&keyword=${kwd }">${i }</a></li>
+										</c:otherwise>
+									</c:choose>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<c:choose>
-	                		<c:when test="${ lastPageNum > blockLastNum && !empty kwd }">
-	                			<li><a href="${pageContext.request.contextPath }/board/list.do?pageNum=${blockStartNum+pageBlock }&search=${cate }&keyword=${kwd }">▶</a></li>
+	                		<c:when test="${ (curPageNum < lastPageNum) && !empty kwd }">
+	                			<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath }/board/list.do?pageNum=${curPageNum+1 }&search=${cate }&keyword=${kwd }">▶</a></li>
 	                		</c:when>
-	                		<c:when test="${ lastPageNum > blockLastNum }">
-	                			<li><a href="${pageContext.request.contextPath }/board/list.do?pageNum=${blockStartNum+pageBlock }">▶</a></li>
+	                		<c:when test="${ curPageNum < lastPageNum }">
+	                			<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath }/board/list.do?pageNum=${curPageNum+1 }">다음</a></li>
 	                		</c:when>
 	                	</c:choose>
 	                </ul>

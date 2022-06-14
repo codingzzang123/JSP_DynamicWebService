@@ -25,12 +25,13 @@ public class ListAction implements Service{
 	    int lastPageNum;
 	    int start = (curPageNum-1) * PageSize + 1; 
     	int end = curPageNum * PageSize;
-	    p.makeBlock(curPageNum);
+    	
 	    
 	    if(kwd==null||kwd.equals("")||kwd.length()==0) {
 	    	p.makeLastPageNum();
 	    	lastPageNum = p.getLastPageNum();
 	    	articleList = dao.getArticles(start, end);
+	    	
 	    }else {
 	    	p.makeLastPageNum(cate, kwd);
 	    	lastPageNum = p.getLastPageNum();
@@ -42,9 +43,12 @@ public class ListAction implements Service{
 				articleList = dao.searchContent(kwd,start,end);
 			}
 	    }
+	    p.makeBlock(curPageNum);
 	    Integer blockStartNum = p.getBlockStartNum();
 	    Integer blockLastNum = p.getBlockLastNum();
 	    Integer pageBlock = p.getPageBlock();
+	    
+	    
 		request.setAttribute("curPageNum", curPageNum);
 		request.setAttribute("blockStartNum", blockStartNum);
 		request.setAttribute("blockLastNum", blockLastNum);

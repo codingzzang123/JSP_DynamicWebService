@@ -35,7 +35,7 @@ public class UserJoinAction implements Service {
 					size,
 					"UTF-8",
 					new DefaultFileRenamePolicy()); 
-			id = multi.getParameter("id");
+			id = multi.getParameter("user_id");
 			name = multi.getParameter("name");
 			pw = multi.getParameter("pw");
 			age = multi.getParameter("age");

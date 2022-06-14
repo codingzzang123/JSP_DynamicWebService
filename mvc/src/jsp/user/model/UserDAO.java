@@ -71,6 +71,33 @@ public class UserDAO {
 			}
 		}
 	}
+	public boolean idCheck(String id) {
+		ResultSet rs = null;
+		String sql = "select * from \"user\" where \"id\" = ?";
+		try {
+			conn = pool.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if(!rs.next()){ //중복 x
+				return false;
+			}
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+		}finally {		
+			try {
+				if(pstmt != null)pstmt.close();
+				if(rs != null)rs.close();
+				if(conn != null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return true;
+	}
 	public boolean isMember(String id, String pw) {
 		ResultSet rs = null;
 		String sql = "select * from \"user\" where \"id\" = ? and \"pw\" = ?";
